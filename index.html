@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miniatures YouTube -- Alpha Wolf Vega</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0A0A0A;
+    color: #F0F0F0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 2px solid #D4AF37;
+    margin-bottom: 2rem;
+  }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #D4AF37;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .header .subtitle {
+    color: #999;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Instruction box */
+  .info-box {
+    background: #141414;
+    border: 1px solid #333;
+    border-left: 4px solid #D4AF37;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .info-box p {
+    color: #BBB;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .info-box p:last-child { margin-bottom: 0; }
+
+  /* How to use */
+  .how-to {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+  }
+  .how-to h2 {
+    color: #D4AF37;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .how-to ol {
+    list-style: none;
+    counter-reset: steps;
+    padding: 0;
+  }
+  .how-to ol li {
+    counter-increment: steps;
+    padding: 0.5rem 0 0.5rem 2.5rem;
+    position: relative;
+    color: #CCC;
+    font-size: 0.95rem;
+  }
+  .how-to ol li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    background: #D4AF37;
+    color: #0A0A0A;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .how-to .path-note {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    background: #1A1A1A;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #D4AF37;
+  }
+
+  /* Script card */
+  .script-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+  .script-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #222;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  .script-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.15);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .script-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FFF;
+    flex: 1;
+    min-width: 200px;
+  }
+  .badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .badge-avarice     { background: rgba(212, 175, 55, 0.2); color: #D4AF37; border: 1px solid #D4AF37; }
+  .badge-paresse     { background: rgba(60, 120, 216, 0.2); color: #5B9BF0; border: 1px solid #5B9BF0; }
+  .badge-envie       { background: rgba(76, 175, 80, 0.2);  color: #66BB6A; border: 1px solid #66BB6A; }
+  .badge-orgueil     { background: rgba(156, 39, 176, 0.2); color: #CE93D8; border: 1px solid #CE93D8; }
+  .badge-colere      { background: rgba(244, 67, 54, 0.2);  color: #EF5350; border: 1px solid #EF5350; }
+  .badge-luxure      { background: rgba(233, 30, 99, 0.2);  color: #EC407A; border: 1px solid #EC407A; }
+  .badge-gourmandise { background: rgba(243, 156, 18, 0.2); color: #F39C12; border: 1px solid #F39C12; }
+
+  /* Thumbnail grid */
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem 2rem 2rem;
+  }
+  .thumb-item {
+    background: #1A1A1A;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #2A2A2A;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .thumb-item:hover {
+    border-color: #D4AF37;
+    transform: translateY(-2px);
+  }
+  .thumb-item a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .thumb-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #222;
+  }
+  .thumb-info {
+    padding: 0.8rem 1rem;
+  }
+  .thumb-var {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.3rem;
+  }
+  .var-letter {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #D4AF37;
+  }
+  .var-concept {
+    font-size: 0.95rem;
+    color: #DDD;
+  }
+  .thumb-filename {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: #777;
+    word-break: break-all;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 1000;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 6px;
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    color: #FFF;
+    font-size: 2rem;
+    font-weight: 300;
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { padding: 1rem 0.5rem; }
+    .header h1 { font-size: 1.5rem; }
+    .script-header { padding: 1rem; }
+    .script-title { font-size: 1.1rem; }
+    .thumb-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; padding: 1rem; }
+    .how-to { padding: 1rem 1.2rem; }
+  }
+  @media (max-width: 480px) {
+    .thumb-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Miniatures YouTube -- Alpha Wolf Vega</h1>
+    <p class="subtitle">Clique sur le script pour voir les 5 variations. Choisis ta preferee pour chaque video.</p>
+  </div>
+
+  <!-- Info box -->
+  <div class="info-box">
+    <p>Chaque video a 5 miniatures (A, B, C, D, E). Le numero du script (001, 002...) correspond au numero dans ton spreadsheet Pipeline.</p>
+    <p>Choisis 1 miniature par video, puis uploade-la sur YouTube Studio au moment de publier.</p>
+  </div>
+
+  <!-- How to use -->
+  <div class="how-to">
+    <h2>Comment utiliser</h2>
+    <ol>
+      <li>Tu ouvres ce fichier dans ton navigateur</li>
+      <li>Tu reperes le numero du script (001, 002, etc.)</li>
+      <li>Tu regardes les 5 miniatures</li>
+      <li>Tu choisis celle qui te plait</li>
+      <li>Tu uploades cette miniature sur YouTube Studio quand tu publies la video</li>
+      <li>Le fichier image est dans le meme dossier que cette page</li>
+    </ol>
+    <div class="path-note">07_thumbnails\v4_skill\</div>
+  </div>
+
+
+  <!-- SCRIPT #001 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #001</span>
+      <span class="script-title">L'IA supprime 300 000 jobs cette semaine (et c'est que le debut)</span>
+      <span class="badge badge-avarice">Avarice</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_001_A_chiffre_choc.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_A_chiffre_choc.jpg" alt="Variation A -- Chiffre Choc" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Chiffre Choc</span></div>
+          <div class="thumb-filename">AWV_001_A_chiffre_choc.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_B_split_opportunite.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_B_split_opportunite.jpg" alt="Variation B -- Split Opportunite" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Split Opportunite</span></div>
+          <div class="thumb-filename">AWV_001_B_split_opportunite.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_C_profite_en_or.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_C_profite_en_or.jpg" alt="Variation C -- Profite En Or" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Profite En Or</span></div>
+          <div class="thumb-filename">AWV_001_C_profite_en_or.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_D_alerte_robot.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_D_alerte_robot.jpg" alt="Variation D -- Alerte Robot" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Alerte Robot</span></div>
+          <div class="thumb-filename">AWV_001_D_alerte_robot.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_E_countdown_dark.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_E_countdown_dark.jpg" alt="Variation E -- Countdown Dark" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Countdown Dark</span></div>
+          <div class="thumb-filename">AWV_001_E_countdown_dark.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_F_job_disparu.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_F_job_disparu.jpg" alt="Variation F -- Job Disparu" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Job Disparu</span></div>
+          <div class="thumb-filename">AWV_001_F_job_disparu.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_G_avant_apres_emploi.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_G_avant_apres_emploi.jpg" alt="Variation G -- Avant Apres Emploi" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Avant Apres Emploi</span></div>
+          <div class="thumb-filename">AWV_001_G_avant_apres_emploi.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_001_H_robot_remplace.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_001_H_robot_remplace.jpg" alt="Variation H -- Robot Remplace" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Robot Remplace</span></div>
+          <div class="thumb-filename">AWV_001_H_robot_remplace.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #002 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #002</span>
+      <span class="script-title">J'ai teste 7 outils IA pour le e-commerce (resultats choquants)</span>
+      <span class="badge badge-paresse">Paresse</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_002_A_7outils_cyan.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_A_7outils_cyan.jpg" alt="Variation A -- 7Outils Cyan" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">7Outils Cyan</span></div>
+          <div class="thumb-filename">AWV_002_A_7outils_cyan.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_B_0employe_barre.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_B_0employe_barre.jpg" alt="Variation B -- 0Employe Barre" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">0Employe Barre</span></div>
+          <div class="thumb-filename">AWV_002_B_0employe_barre.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_C_grid_prix.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_C_grid_prix.jpg" alt="Variation C -- Grid Prix" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Grid Prix</span></div>
+          <div class="thumb-filename">AWV_002_C_grid_prix.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_D_robot_assistant.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_D_robot_assistant.jpg" alt="Variation D -- Robot Assistant" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Robot Assistant</span></div>
+          <div class="thumb-filename">AWV_002_D_robot_assistant.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_E_clavier_auto.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_E_clavier_auto.jpg" alt="Variation E -- Clavier Auto" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Clavier Auto</span></div>
+          <div class="thumb-filename">AWV_002_E_clavier_auto.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_F_7_outils_grid.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_F_7_outils_grid.jpg" alt="Variation F -- 7 Outils Grid" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">7 Outils Grid</span></div>
+          <div class="thumb-filename">AWV_002_F_7_outils_grid.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_G_classement_choc.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_G_classement_choc.jpg" alt="Variation G -- Classement Choc" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Classement Choc</span></div>
+          <div class="thumb-filename">AWV_002_G_classement_choc.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_002_H_zero_employe.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_002_H_zero_employe.jpg" alt="Variation H -- Zero Employe" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Zero Employe</span></div>
+          <div class="thumb-filename">AWV_002_H_zero_employe.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #003 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #003</span>
+      <span class="script-title">Shopify Winter '26 : les 10 nouveautes IA qui changent tout</span>
+      <span class="badge badge-envie">Envie</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_003_A_shopify_winter.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_A_shopify_winter.jpg" alt="Variation A -- Shopify Winter" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Shopify Winter</span></div>
+          <div class="thumb-filename">AWV_003_A_shopify_winter.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_B_plus30_conversion.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_B_plus30_conversion.jpg" alt="Variation B -- Plus30 Conversion" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Plus30 Conversion</span></div>
+          <div class="thumb-filename">AWV_003_B_plus30_conversion.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_C_avant_apres.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_C_avant_apres.jpg" alt="Variation C -- Avant Apres" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Avant Apres</span></div>
+          <div class="thumb-filename">AWV_003_C_avant_apres.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_D_concurrents_dorment.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_D_concurrents_dorment.jpg" alt="Variation D -- Concurrents Dorment" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Concurrents Dorment</span></div>
+          <div class="thumb-filename">AWV_003_D_concurrents_dorment.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_E_personne_sait.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_E_personne_sait.jpg" alt="Variation E -- Personne Sait" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Personne Sait</span></div>
+          <div class="thumb-filename">AWV_003_E_personne_sait.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_F_10_nouveautes.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_F_10_nouveautes.jpg" alt="Variation F -- 10 Nouveautes" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">10 Nouveautes</span></div>
+          <div class="thumb-filename">AWV_003_F_10_nouveautes.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_G_secret_shopify.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_G_secret_shopify.jpg" alt="Variation G -- Secret Shopify" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Secret Shopify</span></div>
+          <div class="thumb-filename">AWV_003_G_secret_shopify.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_H_upgrade_store.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_H_upgrade_store.jpg" alt="Variation H -- Upgrade Store" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Upgrade Store</span></div>
+          <div class="thumb-filename">AWV_003_H_upgrade_store.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_003_I_secret_shopify_v2.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_003_I_secret_shopify_v2.jpg" alt="Variation I -- Secret Shopify V2" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">I</span><span class="var-concept">Secret Shopify V2</span></div>
+          <div class="thumb-filename">AWV_003_I_secret_shopify_v2.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #004 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #004</span>
+      <span class="script-title">Kling 3.0 : j'ai cree mes pubs video sans cameraman</span>
+      <span class="badge badge-orgueil">Orgueil</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_004_A_3ecrans_1h.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_A_3ecrans_1h.jpg" alt="Variation A -- 3Ecrans 1H" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">3Ecrans 1H</span></div>
+          <div class="thumb-filename">AWV_004_A_3ecrans_1h.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_B_prix_barre.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_B_prix_barre.jpg" alt="Variation B -- Prix Barre" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Prix Barre</span></div>
+          <div class="thumb-filename">AWV_004_B_prix_barre.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_C_timeline_3pubs.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_C_timeline_3pubs.jpg" alt="Variation C -- Timeline 3Pubs" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Timeline 3Pubs</span></div>
+          <div class="thumb-filename">AWV_004_C_timeline_3pubs.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_D_agence_vs_toi.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_D_agence_vs_toi.jpg" alt="Variation D -- Agence Vs Toi" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Agence Vs Toi</span></div>
+          <div class="thumb-filename">AWV_004_D_agence_vs_toi.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_E_play_buttons.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_E_play_buttons.jpg" alt="Variation E -- Play Buttons" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Play Buttons</span></div>
+          <div class="thumb-filename">AWV_004_E_play_buttons.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_F_3_pubs_ecran.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_F_3_pubs_ecran.jpg" alt="Variation F -- 3 Pubs Ecran" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">3 Pubs Ecran</span></div>
+          <div class="thumb-filename">AWV_004_F_3_pubs_ecran.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_G_prix_agence_barre.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_G_prix_agence_barre.jpg" alt="Variation G -- Prix Agence Barre" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Prix Agence Barre</span></div>
+          <div class="thumb-filename">AWV_004_G_prix_agence_barre.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_004_H_camera_vs_ia.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_004_H_camera_vs_ia.jpg" alt="Variation H -- Camera vs IA" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Camera vs IA</span></div>
+          <div class="thumb-filename">AWV_004_H_camera_vs_ia.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #005 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #005</span>
+      <span class="script-title">Test Sidekick : le verdict apres 2 semaines sur un vrai store</span>
+      <span class="badge badge-colere">Colere</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_005_A_6sur10.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_A_6sur10.jpg" alt="Variation A -- 6Sur10" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">6Sur10</span></div>
+          <div class="thumb-filename">AWV_005_A_6sur10.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_B_verdict.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_B_verdict.jpg" alt="Variation B -- Verdict" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Verdict</span></div>
+          <div class="thumb-filename">AWV_005_B_verdict.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_C_la_verite.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_C_la_verite.jpg" alt="Variation C -- La Verite" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">La Verite</span></div>
+          <div class="thumb-filename">AWV_005_C_la_verite.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_D_mensonge.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_D_mensonge.jpg" alt="Variation D -- Mensonge" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Mensonge</span></div>
+          <div class="thumb-filename">AWV_005_D_mensonge.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_E_ca_marche_pas.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_E_ca_marche_pas.jpg" alt="Variation E -- Ca Marche Pas" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Ca Marche Pas</span></div>
+          <div class="thumb-filename">AWV_005_E_ca_marche_pas.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_F_note_finale.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_F_note_finale.jpg" alt="Variation F -- Note Finale" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Note Finale</span></div>
+          <div class="thumb-filename">AWV_005_F_note_finale.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_G_promesse_vs_realite.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_G_promesse_vs_realite.jpg" alt="Variation G -- Promesse vs Realite" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Promesse vs Realite</span></div>
+          <div class="thumb-filename">AWV_005_G_promesse_vs_realite.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_H_test_reel_shopify.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_H_test_reel_shopify.jpg" alt="Variation H -- Test Reel Shopify" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Test Reel Shopify</span></div>
+          <div class="thumb-filename">AWV_005_H_test_reel_shopify.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_005_H_test_reel_shopify_v4.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_005_H_test_reel_shopify_v4.jpg" alt="Variation H v4 -- Test Reel Shopify (Original)" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H v4</span><span class="var-concept">Test Reel Shopify (Original)</span></div>
+          <div class="thumb-filename">AWV_005_H_test_reel_shopify_v4.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #006 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #006</span>
+      <span class="script-title">J'ai cree une boutique Shopify avec l'IA en 1 heure (de A a Z)</span>
+      <span class="badge badge-luxure">Luxure</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_006_A_boutique_1h.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_A_boutique_1h.jpg" alt="Variation A -- Boutique 1H" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Boutique 1H</span></div>
+          <div class="thumb-filename">AWV_006_A_boutique_1h.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_B_de_zero.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_B_de_zero.jpg" alt="Variation B -- De Zero" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">De Zero</span></div>
+          <div class="thumb-filename">AWV_006_B_de_zero.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_C_live_build.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_C_live_build.jpg" alt="Variation C -- Live Build" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Live Build</span></div>
+          <div class="thumb-filename">AWV_006_C_live_build.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_D_resultat_final.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_D_resultat_final.jpg" alt="Variation D -- Resultat Final" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Resultat Final</span></div>
+          <div class="thumb-filename">AWV_006_D_resultat_final.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_E_sans_code.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_E_sans_code.jpg" alt="Variation E -- Sans Code" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Sans Code</span></div>
+          <div class="thumb-filename">AWV_006_E_sans_code.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_F_chrono_boutique.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_F_chrono_boutique.jpg" alt="Variation F -- Chrono Boutique" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Chrono Boutique</span></div>
+          <div class="thumb-filename">AWV_006_F_chrono_boutique.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_G_live_build_ia.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_G_live_build_ia.jpg" alt="Variation G -- Live Build IA" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Live Build IA</span></div>
+          <div class="thumb-filename">AWV_006_G_live_build_ia.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_006_H_resultat_final_store.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_006_H_resultat_final_store.jpg" alt="Variation H -- Resultat Final Store" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Resultat Final Store</span></div>
+          <div class="thumb-filename">AWV_006_H_resultat_final_store.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #007 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #007</span>
+      <span class="script-title">40% des Francais utilisent l'IA pour acheter (comment en profiter)</span>
+      <span class="badge badge-colere">Colere</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_007_A_40_pourcent.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_A_40_pourcent.jpg" alt="Variation A -- 40 Pourcent" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">40 Pourcent</span></div>
+          <div class="thumb-filename">AWV_007_A_40_pourcent.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_B_tu_perds.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_B_tu_perds.jpg" alt="Variation B -- Tu Perds" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Tu Perds</span></div>
+          <div class="thumb-filename">AWV_007_B_tu_perds.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_C_5_strategies.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_C_5_strategies.jpg" alt="Variation C -- 5 Strategies" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">5 Strategies</span></div>
+          <div class="thumb-filename">AWV_007_C_5_strategies.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_D_trop_tard.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_D_trop_tard.jpg" alt="Variation D -- Trop Tard" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Trop Tard</span></div>
+          <div class="thumb-filename">AWV_007_D_trop_tard.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_E_ia_achete.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_E_ia_achete.jpg" alt="Variation E -- Ia Achete" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Ia Achete</span></div>
+          <div class="thumb-filename">AWV_007_E_ia_achete.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_F_france_ia_shopping.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_F_france_ia_shopping.jpg" alt="Variation F -- France IA Shopping" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">France IA Shopping</span></div>
+          <div class="thumb-filename">AWV_007_F_france_ia_shopping.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_F_france_ia_shopping_v4.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_F_france_ia_shopping_v4.jpg" alt="Variation F v4 -- France IA Shopping (Original)" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F v4</span><span class="var-concept">France IA Shopping (Original)</span></div>
+          <div class="thumb-filename">AWV_007_F_france_ia_shopping_v4.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_G_adapte_ou_meurs.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_G_adapte_ou_meurs.jpg" alt="Variation G -- Adapte ou Meurs" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Adapte ou Meurs</span></div>
+          <div class="thumb-filename">AWV_007_G_adapte_ou_meurs.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_H_3_strategies_ia.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_H_3_strategies_ia.jpg" alt="Variation H -- 3 Strategies IA" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">3 Strategies IA</span></div>
+          <div class="thumb-filename">AWV_007_H_3_strategies_ia.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_007_I_3_strategies_ia_action.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_007_I_3_strategies_ia_action.jpg" alt="Variation I -- 3 Strategies IA (Action)" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">I</span><span class="var-concept">3 Strategies IA (Action)</span></div>
+          <div class="thumb-filename">AWV_007_I_3_strategies_ia_action.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #008 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #008</span>
+      <span class="script-title">J'ai remplace mon equipe par des IA</span>
+      <span class="badge badge-avarice">Avarice</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_008_A_virees.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_A_virees.jpg" alt="Variation A -- Virees x4" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Virees x4</span></div>
+          <div class="thumb-filename">AWV_008_A_virees.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_008_B_split_postes.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_B_split_postes.jpg" alt="Variation B -- Split 4 Postes" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Split 4 Postes</span></div>
+          <div class="thumb-filename">AWV_008_B_split_postes.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_008_C_30jours.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_C_30jours.jpg" alt="Variation C -- 30 Jours +40%" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">30 Jours +40%</span></div>
+          <div class="thumb-filename">AWV_008_C_30jours.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_008_D_seul_vs_equipe.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_D_seul_vs_equipe.jpg" alt="Variation D -- Seul vs Equipe" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Seul vs Equipe</span></div>
+          <div class="thumb-filename">AWV_008_D_seul_vs_equipe.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_008_E_economies_choc.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_E_economies_choc.jpg" alt="Variation E -- Economies Choc" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Economies Choc</span></div>
+          <div class="thumb-filename">AWV_008_E_economies_choc.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_008_F_verdict_30_jours.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_008_F_verdict_30_jours.jpg" alt="Variation F -- Verdict 30 Jours" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Verdict 30 Jours</span></div>
+          <div class="thumb-filename">AWV_008_F_verdict_30_jours.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT #009 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #009</span>
+      <span class="script-title">Skibidi Tentafruit : ce que 100M de vues IA changent pour ton business</span>
+      <span class="badge badge-gourmandise">Gourmandise</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_009_A_100m_vues.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_A_100m_vues.jpg" alt="Variation A -- Choc 100M DE VUES" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Choc 100M DE VUES</span></div>
+          <div class="thumb-filename">AWV_009_A_100m_vues.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_B_business_profite.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_B_business_profite.jpg" alt="Variation B -- Split business vs buzz" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Split business vs buzz</span></div>
+          <div class="thumb-filename">AWV_009_B_business_profite.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_C_70000_coms.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_C_70000_coms.jpg" alt="Variation C -- 70 000 COMS" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">70 000 COMS</span></div>
+          <div class="thumb-filename">AWV_009_C_70000_coms.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_D_ile_tentation.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_D_ile_tentation.jpg" alt="Variation D -- Ile de la Tentation" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Ile de la Tentation</span></div>
+          <div class="thumb-filename">AWV_009_D_ile_tentation.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_E_oasis_brand_surf.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_E_oasis_brand_surf.jpg" alt="Variation E -- Oasis Brand Surf" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Oasis Brand Surf</span></div>
+          <div class="thumb-filename">AWV_009_E_oasis_brand_surf.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_F_cast_complet.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_F_cast_complet.jpg" alt="Variation F -- Cast Complet" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Cast Complet</span></div>
+          <div class="thumb-filename">AWV_009_F_cast_complet.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_G_phenomene_ia.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_G_phenomene_ia.jpg" alt="Variation G -- Phenomene IA" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Phenomene IA</span></div>
+          <div class="thumb-filename">AWV_009_G_phenomene_ia.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_G_phenomene_ia_v4.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_G_phenomene_ia_v4.jpg" alt="Variation G v4 -- Phenomene IA (Original)" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G v4</span><span class="var-concept">Phenomene IA (Original)</span></div>
+          <div class="thumb-filename">AWV_009_G_phenomene_ia_v4.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_H_lecon_business.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_H_lecon_business.jpg" alt="Variation H -- Lecon Business" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Lecon Business</span></div>
+          <div class="thumb-filename">AWV_009_H_lecon_business.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_I_ton_tour.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_I_ton_tour.jpg" alt="Variation I -- Ton Tour" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">I</span><span class="var-concept">Ton Tour</span></div>
+          <div class="thumb-filename">AWV_009_I_ton_tour.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_I_ton_tour_v4.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_I_ton_tour_v4.jpg" alt="Variation I v4 -- Ton Tour (Original)" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">I v4</span><span class="var-concept">Ton Tour (Original)</span></div>
+          <div class="thumb-filename">AWV_009_I_ton_tour_v4.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_009_J_phenomene_ia_v2.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_009_J_phenomene_ia_v2.jpg" alt="Variation J -- Phenomene IA V2" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">J</span><span class="var-concept">Phenomene IA V2</span></div>
+          <div class="thumb-filename">AWV_009_J_phenomene_ia_v2.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT #011 -->
+  <div class="script-card">
+    <div class="script-header">
+      <span class="script-number">SCRIPT #011</span>
+      <span class="script-title">Ma Méthode pour Trouver 10 Produits Rentables en 8 Min</span>
+      <span class="badge badge-envie">Envie</span>
+    </div>
+    <div class="thumb-grid">
+      <div class="thumb-item"><a href="AWV_011_A_methode_secrete.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_A_methode_secrete.jpg" alt="Variation A -- Méthode Secrète" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">A</span><span class="var-concept">Méthode Secrète</span></div>
+          <div class="thumb-filename">AWV_011_A_methode_secrete.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_B_chrono_defi.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_B_chrono_defi.jpg" alt="Variation B -- Chrono Défi" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">B</span><span class="var-concept">Chrono Défi</span></div>
+          <div class="thumb-filename">AWV_011_B_chrono_defi.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_C_ils_galèrent.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_C_ils_galèrent.jpg" alt="Variation C -- Ils Galèrent" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">C</span><span class="var-concept">Ils Galèrent</span></div>
+          <div class="thumb-filename">AWV_011_C_ils_galèrent.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_D_produits_or.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_D_produits_or.jpg" alt="Variation D -- Produits Or" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">D</span><span class="var-concept">Produits Or</span></div>
+          <div class="thumb-filename">AWV_011_D_produits_or.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_E_avant_apres.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_E_avant_apres.jpg" alt="Variation E -- Avant/Après" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">E</span><span class="var-concept">Avant/Après</span></div>
+          <div class="thumb-filename">AWV_011_E_avant_apres.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_F_shopify_hunter.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_F_shopify_hunter.jpg" alt="Variation F -- Shopify Hunter" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">F</span><span class="var-concept">Shopify Hunter</span></div>
+          <div class="thumb-filename">AWV_011_F_shopify_hunter.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_G_outils_barres.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_G_outils_barres.jpg" alt="Variation G -- Outils Barrés" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">G</span><span class="var-concept">Outils Barrés</span></div>
+          <div class="thumb-filename">AWV_011_G_outils_barres.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_H_cascade_produits.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_H_cascade_produits.jpg" alt="Variation H -- Cascade Produits" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">H</span><span class="var-concept">Cascade Produits</span></div>
+          <div class="thumb-filename">AWV_011_H_cascade_produits.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_I_timer_epure.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_I_timer_epure.jpg" alt="Variation I -- Timer Épuré" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">I</span><span class="var-concept">Timer Épuré</span></div>
+          <div class="thumb-filename">AWV_011_I_timer_epure.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_J_screenshot_flou.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_J_screenshot_flou.jpg" alt="Variation J -- Screenshot Flou" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">J</span><span class="var-concept">Screenshot Flou</span></div>
+          <div class="thumb-filename">AWV_011_J_screenshot_flou.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_K_profondeur_produits.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_K_profondeur_produits.jpg" alt="Variation K -- Profondeur Produits" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">K</span><span class="var-concept">Profondeur Produits</span></div>
+          <div class="thumb-filename">AWV_011_K_profondeur_produits.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_L_epure_v2_stacked.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_L_epure_v2_stacked.jpg" alt="Variation L -- Épuré v2 Stacked" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">L</span><span class="var-concept">Épuré v2 Stacked</span></div>
+          <div class="thumb-filename">AWV_011_L_epure_v2_stacked.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_M_epure_v3_diagonal.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_M_epure_v3_diagonal.jpg" alt="Variation M -- Épuré v3 Diagonal" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">M</span><span class="var-concept">Épuré v3 Diagonal</span></div>
+          <div class="thumb-filename">AWV_011_M_epure_v3_diagonal.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_N_epure_v4_encadre.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_N_epure_v4_encadre.jpg" alt="Variation N -- Épuré v4 Encadré" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">N</span><span class="var-concept">Épuré v4 Encadré</span></div>
+          <div class="thumb-filename">AWV_011_N_epure_v4_encadre.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_O_epure_v5_neon_split.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_O_epure_v5_neon_split.jpg" alt="Variation O -- Neon Split" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">O</span><span class="var-concept">Neon Split</span></div>
+          <div class="thumb-filename">AWV_011_O_epure_v5_neon_split.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_P_epure_v6_typo_xxl.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_P_epure_v6_typo_xxl.jpg" alt="Variation P -- Typo XXL" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">P</span><span class="var-concept">Typo XXL</span></div>
+          <div class="thumb-filename">AWV_011_P_epure_v6_typo_xxl.jpg</div>
+        </div>
+      </a></div>
+      <div class="thumb-item"><a href="AWV_011_Q_epure_v7_countdown.jpg" onclick="openLightbox(event, this.href)">
+        <img src="AWV_011_Q_epure_v7_countdown.jpg" alt="Variation Q -- Countdown" loading="lazy">
+        <div class="thumb-info">
+          <div class="thumb-var"><span class="var-letter">Q</span><span class="var-concept">Countdown</span></div>
+          <div class="thumb-filename">AWV_011_Q_epure_v7_countdown.jpg</div>
+        </div>
+      </a></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">X</span>
+  <img id="lightbox-img" src="" alt="Miniature plein ecran">
+</div>
+
+<script>
+  function openLightbox(e, src) {
+    e.preventDefault();
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightbox-img').src = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
